@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}search - WM{% endblock%}
+{% block content %}
+<main class="main">
+    <section class="section__books">
+        <div class="container">
+            <h2 class="site__title-h2">You searched for '{{ searched }}'</h2>
+            <div class="book-container ">
+                {% for book in searched_book %}
+                <a href="{{ url_for('bookview', book_id=book.book_id) }}" class="book-card">
+                    <figure class="card__figure">
+                        <img class="book-cover" width="334" height="500" src="{{ book.book_cover }}" alt="{{ book.book_title }} cover">
+                        <div class="book-details">
+                            <p class="book-title">{{ book.book_title }}</p>
+                            <p class="book-price">{{ book.book_price }}</p>
+                        </div>
+                    </figure>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

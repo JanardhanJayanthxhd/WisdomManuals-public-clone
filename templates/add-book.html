@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="main container">
+    <h2 class="site__title-h2">ADMIN>add book</h2>
+    <div class="link__conatiner text-center">
+         <form class="add__form" action="{{ url_for('add_book') }}" method="post">
+            <fieldset class="form__fieldset">
+                <p class="form__p">
+                    <label class="form__label" for="booktitle">Book Title</label>
+                    <input class="form__input" type="text" name="booktitle" id="booktitle" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="booksubtitle">Book Subtitle</label>
+                    <input class="form__input" type="text" name="booksubtitle" id="booksubtitle" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookauthor">Book Author</label>
+                    <input class="form__input" type="text" name="bookauthor" id="bookauthor" placeholder="if single end with ',' else separated by ',' (no space after ',')" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookcategory">Book Category</label>
+                    <input class="form__input" type="text" name="bookcategory" id="bookcategory" placeholder="if single end with ',' else separated by ',' (no space after ',')" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookpages">Book Pages</label>
+                    <input class="form__input" type="number" name="bookpages" id="bookpages"  required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookprice">Book Price</label>
+                    <input class="form__input" type="number" name="bookprice" id="bookprice" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookisbn">Book ISBN-10</label>
+                    <input class="form__input" type="number" name="bookisbn" id="bookisbn" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookcoverurl">Book Cover URL</label>
+                    <input class="form__input" type="text" name="bookcoverurl" id="bookcoverurl" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookqty">Available Book quantity</label>
+                    <input class="form__input" type="number" value="100" name="bookqty" id="bookqty" required>
+                </p>
+            </fieldset>
+            <div class="btn-container">
+                <button class="btn" type="submit">Add new book</button>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

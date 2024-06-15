@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}register - WM{% endblock %}
+
+{% block content %}
+        <main class="main">
+            <div class="container">
+                <h2 class="site__title-h2">Create an account</h2>
+                <form class="register__form" action="{{ url_for('register') }}" method="post">
+                    <fieldset class="form__fieldset">
+                        <p class="form__p">
+                            <label class="form__label" for="username">UserName</label>
+                            <input class="form__input" type="text" name="username" id="username" required>
+                        </p>
+                        <p class="form__p">
+                            <label class="form__label" for="email">Email</label>
+                            <input class="form__input" type="email" name="email" id="email" required>
+                        </p>
+                        <p class="form__p">
+                            <label class="form__label" for="phone">PhoneNumber</label>
+                            <input class="form__input" type="tel" name="phone" id="phone" required>
+                        </p>
+                        <p class="form__p">
+                            <label class="form__label" for="password">Password</label>
+                            <div class="password__input-container">
+                                <input class="form__input" type="password" name="password" id="password" required>
+                                <img id="pwd-visibility" src="../static/img/visibility_off.png" alt="visibility off" width="24" height="24">
+                            </div>
+                        </p>
+                    </fieldset>
+                    <div class="btn-container">
+                        <button class="btn" type="submit">Register</button>
+                    </div>
+                </form>
+                <div class="link__conatiner text-center">
+                    <a class="site__link" href="{{ url_for('login') }}">Already have an Account?</a>
+                </div>
+
+            </div>
+        </main>
+{% endblock %}
+
+{% block script %}
+<!-- Password visibiliy toggler -->
+<script>
+    let eyeIcon = document.getElementById("pwd-visibility");
+    let passwordInput = document.getElementById("password");
+
+    eyeIcon.addEventListener("click", function(){
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
+        const src = eyeIcon.getAttribute("src") === "../static/img/visibility_off.png" ? "../static/img/visibility.png" : "../static/img/visibility_off.png";
+        eyeIcon.setAttribute("src", src)
+    });
+</script>
+{% endblock %}

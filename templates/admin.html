@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="main container">
+    <h2 class="site__title-h2">ADMINISTRATOR's dashboard</h2>
+    <div class="book-table__container">
+        <table class="book__table">
+            <thead class="table__head">
+                <tr class="table__row">
+                    <th class="table__heading nowrap" >book name</th>
+                    <th class="table__heading nowrap" >book subtitle</th>
+                    <th class="table__heading nowrap" >book authors</th>
+                    <th class="table__heading nowrap" >book category</th>
+                    <th class="table__heading nowrap" >book length</th>
+                    <th class="table__heading nowrap" >book price</th>
+                    <th class="table__heading nowrap" >book ISBN</th>
+                    <th class="table__heading nowrap" >book cover URL</th>
+                    <th class="table__heading nowrap" >book quantity</th>
+                    <th class="table__heading nowrap" >options</th>
+                </tr>
+            </thead>
+            <tbody class="table__body">
+                {% for book in books %}
+                    <tr class="table__row">
+                        <td class="table__data table__book-title" >{{ book.book_title }}</td>
+                        <td class="table__data" >{{ book.book_subtitle }}</td>
+                        <td class="table__data" >{{ book.book_author }}</td>
+                        <td class="table__data" >{{ book.book_category }}</td>
+                        <td class="table__data" >{{ book.book_pages }}</td>
+                        <td class="table__data" >₹{{ book.book_price }}</td>
+                        <td class="table__data nowrap" >{{ book.book_isbn }}</td>
+                        <td class="table__data nowrap" ><a class="site__link" href="{{ book.book_cover }}">cover link</a></td>
+                        <td class="table__data" >{{ book.qty_available }}</td>
+                        <td class="table__data" >
+                            <div class="btn-container">
+                                 <a class="text-center btn-a" href="{{ url_for('edit_book', b_id=book.book_id) }}">EDIT</a>
+                                <a class="text-center btn-a" href="{{ url_for('delete_book', b_id=book.book_id) }}">DELETE</a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="btn-container">
+        <a class="btn-a" href="{{ url_for('add_book') }}">ADD new book</a>
+    </div>
+</main>
+{% endblock %}

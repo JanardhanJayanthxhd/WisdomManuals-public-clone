@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WisdomManuals.com{% endblock %}</title>
+    <meta name="author" content="Janardhan Jayanth">
+    <meta name="description" content="An e-commerse book store">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/book favicon.ico') }}" type="image/x-icon">
+
+    <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+    <div class="site">
+        <header class="header">
+            <nav class="nav container">
+                <a href="{{ url_for('home') }}" class="nav__brand">WisdomManuals</a>
+                <input type="checkbox" id="nav-chkbox">
+                <label for="nav-chkbox" class="menu-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="36" viewBox="0 -960 960 960" width="36"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+                </label>
+
+                <label for="nav-chkbox" class="overlay"></label>
+
+                <div class="nav__links-container">
+                    <label for="nav-chkbox" class="close-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="36" viewBox="0 -960 960 960" width="36"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                    </label>
+
+                    <div class="search-bar">
+                        <form action="{{ url_for('search') }}" method="post" class="searck__form">
+                            <input name="searched" id="searched" class="search-input" type="text" placeholder="search">
+                            <button class="btn" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="23" viewBox="0 -960 960 960" width="23"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <a class="nav__link" href="{{ url_for('home') }}#books">Books</a>
+                    <!-- for checking if there is any user logged in. -->
+                    {% if current_user.is_authenticated: %}
+                    <a class="nav__link" href="{{ url_for('logout') }}">Logout</a>
+                    <a class="nav__link" href="{{ url_for('cart') }}">Cart</a>
+                    {% else: %}
+                    <a class="nav__link" href="{{ url_for('login') }}">Login</a>
+                    {% endif %}
+
+                </div>
+            </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer class="footer">
+            <div class="container">
+                <p class="footer__text">
+                    <span class="nowrap">&copy; <time id="year"></time> WisdomManuals. </span>
+                    <span class="nowrap">All rights reserverd.</span>
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+{% block script %}{% endblock %}
+</html>

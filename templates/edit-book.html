@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="main container">
+    <h2 class="site__title-h2">ADMIN>edit book</h2>
+    <form class="add__form" action="{{ url_for('edit_book', b_id=book.book_id) }}" method="post">
+            <fieldset class="form__fieldset">
+                <p class="form__p">
+                    <label class="form__label" for="booktitle">Book Title</label>
+                    <input class="form__input" type="text" name="booktitle" id="booktitle" value="{{ book.book_title }}" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="booksubtitle">Book Subtitle</label>
+                    <input class="form__input" type="text" name="booksubtitle" id="booksubtitle" value="{{ book.book_subtitle }}" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookcoverurl">Book Cover URL</label>
+                    <input class="form__input" type="text" name="bookcoverurl" id="bookcoverurl" value="{{ book.book_cover }}" required>
+                </p>
+                <p class="form__p">
+                    <label class="form__label" for="bookqty">Available Book quantity</label>
+                    <input class="form__input" type="number" name="bookqty" id="bookqty" value="{{ book.qty_available }}" required>
+                </p>
+            </fieldset>
+            <div class="btn-container">
+                <button class="btn" type="submit">update</button>
+            </div>
+        </form>
+
+</main>
+{% endblock %}

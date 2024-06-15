@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}search - WM{% endblock%}
+{% block content %}
+<main class="main">
+    <section class="section__filters">
+                <div class="container">
+                    <ul class="filters__ul">
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('home') }}#books">All</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='business') }}">Business</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='philosophy') }}">Philosophy</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='psychology') }}">Psychology</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='self-help') }}">Self-Help</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='biography') }}">Biography</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='autobiography') }}">Autobiography</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='fiction') }}">Fiction</a></li>
+                    </ul>
+                </div>
+            </section>
+    <section class="section__books">
+        <div class="container">
+            <h2 class="site__title-h2">Books under category '{{ category }}'</h2>
+            <div class="book-container ">
+                {% for book in books %}
+                <a href="{{ url_for('bookview', book_id=book.book_id) }}" class="book-card">
+                    <figure class="card__figure">
+                        <img class="book-cover" width="334" height="500" src="{{ book.book_cover }}" alt="{{ book.book_title }} cover">
+                        <div class="book-details">
+                            <p class="book-title">{{ book.book_title }}</p>
+                            <p class="book-price">{{ book.book_price }}</p>
+                        </div>
+                    </figure>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

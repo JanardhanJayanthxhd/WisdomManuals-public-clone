@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}view - WM{% endblock %}
+
+{% block content %}
+        <main class="main">
+            <div class="container">
+                <div class="view-container">
+                    <div class="view__img">
+                        <img class="book-cover" src="{{ book.book_cover }}" alt="book cover" width="334" height="500">
+                    </div>
+                    <div class="view__book-details">
+                        <h2 class="view__book-title">{{ book.book_title }}</h2>
+                        <h3 class="view__book-subtitle">{{ book.book_subtitle }}</h3>
+                        <p class="view__p">
+
+                            Author : {% for i in range(authors_len) %}
+                                        <span class="nowrap">{{ authors[i] }}</span>
+                                        {% if authors[i] == authors[-1] %}
+                                            <span></span>
+                                        {% else: %}
+                                            <span>,</span>
+                                        {% endif %}
+                                     {% endfor %}
+                        </p>
+                        <p class="view__p">
+                            Category : {% if categories %}
+                                            {% for i in range(category_len) %}
+                                                <span>{{ categories[i] }}</span>
+                                                {% if categories[i] == categories[-1] %}
+                                                    <span></span>
+                                                {% else: %}
+                                                    <span>,</span>
+                                                {% endif %}
+                                            {% endfor %}
+                                       {% else: %}
+                                            -
+                                       {% endif %}
+                        </p>
+                        <p class="view__p">Length : {{ book.book_pages }} pages</p>
+                        <p class="view__p">ISBN-10 : {{ book.book_isbn }}</p>
+                        <p class="view__p">Price : &#x20B9;{{ book.book_price }}</p>
+                        <div class="cart-btn--container">
+                            <a href="{{ url_for('add_to_cart', book_id=book.book_id) }}" class="text-center btn-a nowrap">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+ {% endblock %}

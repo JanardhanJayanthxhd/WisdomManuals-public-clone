@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+        <main class="main">
+
+            <section class="section__slideshow">
+                <div class="slide__frame">
+                    <div class="slide__img">
+                        <div class="slide">
+                            <div class="blured-background background-one"></div>
+                            <div class="slide__content">
+                                <h2 class="slide__h2">Buy books worth more than &#8377;1,000<br>
+                                    and get free delivery</h2>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="blured-background background-two"></div>
+                            <div class="slide__content">
+                                <h2 class="slide__h2">Buy books worth more than &#8377;5,000<br>
+                                    and get &#8377;500 off</h2>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <div class="blured-background background-two"></div>
+                            <div class="slide__content">
+                                <h2 class="slide__h2">Buy books worth more than &#8377;1,000<br>
+                                    and get &#8377;100 off</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="filters" class="section__filters">
+                <div class="container">
+                    <ul class="filters__ul">
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='business') }}">Business</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='philosophy') }}">Philosophy</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='psychology') }}">Psychology</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='self-help') }}">Self-Help</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='biography') }}">Biography</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='autobiography') }}">Autobiography</a></li>
+                        <li class="filter__list nowrap"><a class="filter__link" href="{{ url_for('filters', category='fiction') }}">Fiction</a></li>
+                    </ul>
+                </div>
+            </section>
+
+            <h2 class="site__title-h2 container">
+                <span class="nowrap">
+                    Good <span id="greeter"></span>
+                </span>
+                {% if current_user.is_authenticated: %}
+                <span class="nowrap">, {{ current_user.username }}</span>
+                {% endif %}
+            </h2>
+
+            <section class="section__books" id="books">
+                <div class="book-container container">
+
+                    {% for book in books_on_page %}
+                    <a href="{{ url_for('bookview', book_id=book.book_id) }}" class="book-card">
+                        <figure class="card__figure">
+                            <img class="book-cover" width="334" height="500" src="{{ book.book_cover }}" alt="{{ book.book_title }} cover">
+                            <div class="book-details">
+                                <p class="book-title">{{ book.book_title }}</p>
+                                <p class="book-price">{{ book.book_price }}</p>
+                            </div>
+                        </figure>
+                    </a>{% endfor %}
+
+                </div>
+
+                <div class="pagination btn-container">
+                    {% if page > 1 %}
+                    <a class="pagination__link" href="{{ url_for('home', page=page-1) }}">Previous</a>
+                    {% endif %}
+                    <span class="pagination__span">&nbsp;Page {{ page }} of {{ total_pages }}&nbsp;</span>
+                    {% if page < total_pages %}
+                    <a class="pagination__link" href="{{ url_for('home', page=page+1) }}">Next</a>
+                    {% endif %}
+                </div>
+            </section>
+
+        </main>
+{% endblock %}

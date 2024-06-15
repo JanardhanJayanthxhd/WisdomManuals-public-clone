@@ -1,0 +1,4 @@
+main.py does:
+- scrap web for book(https://upjourney.com/best-self-help-books)
+- automate isbn-10(https://isbnsearch.org/)
+- create bookdata.csv with book name and its isbn-10 for later use(present in ../static/csv).
