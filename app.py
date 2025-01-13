@@ -14,13 +14,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 # SMTP setup
-my_email = "janapyxhd@gmail.com"
-pwd = "ivqqyydbqdhfsyop"
+my_email = ""  # Your senders email id
+pwd = "" # That email's password
 
 # application
 app = Flask(__name__)
 app.app_context().push()
-app.config["SECRET_KEY"] = "vainko"
+app.config["SECRET_KEY"] = "" # Secret key for this application
 
 # DB
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
@@ -220,26 +220,6 @@ def home():
                            page=page, current_user=current_user)
 
 
-def update_amount(book_id, operation, qty):
-    """updates amount of the current user when a book is added, reduced or removed from cart"""
-    book = Books.query.filter_by(book_id=book_id).first()
-    price = book.book_price
-    book_qty = book.qty_available
-    print(price)
-    if operation == 'add':
-        print('amount updated')
-        current_user.amount += price * int(qty)
-        book_qty -= int(qty)
-        db.session.commit()
-        print(current_user.amount)
-    elif operation == 'sub':
-        print('amount decreased')
-        current_user.amount -= price * int(qty)
-        book_qty += int(qty)
-        db.session.commit()
-        print(current_user.amount)
-
-
 @app.route('/bookview/<int:book_id>')
 def bookview(book_id):
     """Book View page of the site"""
@@ -272,18 +252,6 @@ def add_to_cart(book_id):
         print('book added')
         update_amount(book_id, 'add', add_new_book.qty_ordered)
     return redirect(url_for('cart'))
-
-
-def book_and_quantity() -> dict:
-    """Returns current_user's dictionary of {ordered Book(object) : and its quantity}"""
-    # Getting cart_id of the current_user from CartTable
-    cart_id = Cart().get_current_cart_id()
-    # Using that cart_id to query all items with that id from CartItemsTable
-    cart_items = CartItems.query.filter_by(cart_id=cart_id).order_by('cart_id').all()
-    # Using the cart_items(object) to get books form BooksTable using book_id in CartItemsTable
-    # And creating a dictionary book_qty = {book(object) : its quantity}
-    book_qty = {Books.query.filter_by(book_id=i.book_id).first(): i.qty_ordered for i in cart_items}
-    return book_qty
 
 
 @app.route('/cart')
@@ -398,22 +366,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-def apply_offers() -> str:
-    """applies offer when checking out"""
-    offer = ''
-    amount = current_user.amount
-    if amount > 5000:
-        current_user.amount -= 500
-        db.session.commit()
-        offer += 'books > ₹5,000, so ₹500 off'
-    elif amount > 1000:
-        current_user.amount -= 100
-        db.session.commit()
-        offer += 'books > ₹1,000, so ₹100 off'
-    print(offer)
-    return offer
-
-
 # Payment
 @app.route('/checkout', methods=["GET", "POST"])
 @login_required
@@ -461,8 +413,9 @@ def bill():
     """payment portal for WM, uses RAZORPAY"""
     current_cart_id = Cart().get_current_cart_id()
 
+    auth = ('', '') # the razor pay's auth info : (test_key, api_key)
     # razor pay code
-    client = razorpay.Client(auth=("rzp_test_bEltEAoqw7ZOme", "tsE0PRH0hc6sgeQszkbnNBJM"))
+    client = razorpay.Client(auth=auth)
     data = {"amount": (current_user.amount * 100), "currency": "INR", "receipt": f'{current_cart_id}'}
     payment = client.order.create(data=data)
 
@@ -486,42 +439,6 @@ def payment_successful():
     current_user.amount = 0
     db.session.commit()
     return redirect(url_for('cart'))
-
-
-def send_mail():
-    """sends mail to the current_user.email about his/her order"""
-    to_email = Users.query.filter_by(id=current_user.id).first().email
-    today = datetime.datetime.now().date()
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = 'Test HTML Email'
-    msg['From'] = my_email
-    msg['To'] = current_user.email
-    text = MIMEText(f"""
-    <!doctype html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    </head>
-    <body>
-        <h1>Order placed successfully in WisdomManuals.com</h1>
-        <p>Name -  {current_user.username} </p>
-        <p>{book_and_quantity().keys()}</p>
-        <p>Total {current_user.amount} : PAID</p>
-        <h2>Your order will be delivered within 7-9 days({today+datetime.timedelta(days=7)} - {today+datetime.timedelta(days=9)})</h2>
-        <p>This is a test mail - there is no real WM.com</p>
-    </body>
-    </html>
-    """, 'html')
-    msg.attach(text)
-    with smtplib.SMTP(host='smtp.gmail.com', port=587) as con:
-        con.starttls()
-        con.login(my_email, pwd)
-        con.sendmail(from_addr=my_email,
-                     to_addrs=current_user.email,
-                     msg=msg.as_string())
 
 
 @app.route('/failed')
@@ -587,6 +504,89 @@ def delete_book(b_id):
     db.session.delete(book_to_delete)
     db.session.commit()
     return redirect(url_for('admin'))
+
+
+# Helpers
+def send_mail():
+    """sends mail to the current_user.email about his/her order"""
+    to_email = Users.query.filter_by(id=current_user.id).first().email
+    today = datetime.datetime.now().date()
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = 'Test HTML Email'
+    msg['From'] = my_email
+    msg['To'] = current_user.email
+    text = MIMEText(f"""
+    <!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    </head>
+    <body>
+        <h1>Order placed successfully in WisdomManuals.com</h1>
+        <p>Name -  {current_user.username} </p>
+        <p>{book_and_quantity().keys()}</p>
+        <p>Total {current_user.amount} : PAID</p>
+        <h2>Your order will be delivered within 7-9 days({today+datetime.timedelta(days=7)} - {today+datetime.timedelta(days=9)})</h2>
+        <p>This is a test mail - there is no real WM.com</p>
+    </body>
+    </html>
+    """, 'html')
+    msg.attach(text)
+    with smtplib.SMTP(host='smtp.gmail.com', port=587) as con:
+        con.starttls()
+        con.login(my_email, pwd)
+        con.sendmail(from_addr=my_email,
+                     to_addrs=current_user.email,
+                     msg=msg.as_string())
+
+def apply_offers() -> str:
+    """applies offer when checking out"""
+    offer = ''
+    amount = current_user.amount
+    if amount > 5000:
+        current_user.amount -= 500
+        db.session.commit()
+        offer += 'books > ₹5,000, so ₹500 off'
+    elif amount > 1000:
+        current_user.amount -= 100
+        db.session.commit()
+        offer += 'books > ₹1,000, so ₹100 off'
+    print(offer)
+    return offer
+
+def book_and_quantity() -> dict:
+    """Returns current_user's dictionary of {ordered Book(object) : and its quantity}"""
+    # Getting cart_id of the current_user from CartTable
+    cart_id = Cart().get_current_cart_id()
+    # Using that cart_id to query all items with that id from CartItemsTable
+    cart_items = CartItems.query.filter_by(cart_id=cart_id).order_by('cart_id').all()
+    # Using the cart_items(object) to get books form BooksTable using book_id in CartItemsTable
+    # And creating a dictionary book_qty = {book(object) : its quantity}
+    book_qty = {Books.query.filter_by(book_id=i.book_id).first(): i.qty_ordered for i in cart_items}
+    return book_qty
+
+
+def update_amount(book_id, operation, qty):
+    """updates amount of the current user when a book is added, reduced or removed from cart"""
+    book = Books.query.filter_by(book_id=book_id).first()
+    price = book.book_price
+    book_qty = book.qty_available
+    print(price)
+    if operation == 'add':
+        print('amount updated')
+        current_user.amount += price * int(qty)
+        book_qty -= int(qty)
+        db.session.commit()
+        print(current_user.amount)
+    elif operation == 'sub':
+        print('amount decreased')
+        current_user.amount -= price * int(qty)
+        book_qty += int(qty)
+        db.session.commit()
+        print(current_user.amount)
 
 
 if __name__ == '__main__':

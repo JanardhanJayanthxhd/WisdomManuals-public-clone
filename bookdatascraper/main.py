@@ -16,7 +16,7 @@ class Book:
 
 
 class BookIsbn(Book):
-    CHR0ME_WEBDRIVER_PATH = 'C:/Webdriver/chromedriver.exe'
+    CHR0ME_WEBDRIVER_PATH = ''  # Your chromedriver.exe'p path
     service = Service(executable_path=CHR0ME_WEBDRIVER_PATH)
     driver = webdriver.Chrome(service=service)
 

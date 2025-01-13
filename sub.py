@@ -1,8 +1,7 @@
 import requests
 from random import choice
 
-google_books_api_key = 'AIzaSyCsysxweyXppVi7mTFoX1A4tF4jcRdTS1c'
-# old key - AIzaSyA_ekJEWs4O6ITY_hbofvrHsN7Ol5qqPzk
+google_books_api_key = '' # Google books API Key
 
 
 class Book:
