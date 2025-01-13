@@ -8,6 +8,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
 
+CHROME_WEB_DRIVER_PATH = '' # Your chromedriver.exe'p path
+
 class Book:
     book_dict = {}
 
@@ -16,7 +18,7 @@ class Book:
 
 
 class BookIsbn(Book):
-    CHR0ME_WEBDRIVER_PATH = ''  # Your chromedriver.exe'p path
+    CHR0ME_WEBDRIVER_PATH = CHROME_WEB_DRIVER_PATH
     service = Service(executable_path=CHR0ME_WEBDRIVER_PATH)
     driver = webdriver.Chrome(service=service)
 

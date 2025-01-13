@@ -17,6 +17,11 @@ from email.mime.text import MIMEText
 my_email = ""  # Your senders email id
 pwd = "" # That email's password
 
+# Razor pay auth tokens
+RAZOR_TEST = '' # Razor pay test key
+RAZOR_API = '' # Razor pay api key
+
+
 # application
 app = Flask(__name__)
 app.app_context().push()
@@ -413,7 +418,7 @@ def bill():
     """payment portal for WM, uses RAZORPAY"""
     current_cart_id = Cart().get_current_cart_id()
 
-    auth = ('', '') # the razor pay's auth info : (test_key, api_key)
+    auth = (RAZOR_TEST, RAZOR_API)
     # razor pay code
     client = razorpay.Client(auth=auth)
     data = {"amount": (current_user.amount * 100), "currency": "INR", "receipt": f'{current_cart_id}'}
