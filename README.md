@@ -52,9 +52,8 @@ Install the required packages using `pip`
 
 ## Relational Database
 
-(for more see 'ss' directory)
 
-<details><summary>Home page</summary>
+<details><summary><h3>Database schema</h3></summary>
 
 <img src="ss/db_schema.png">
 
