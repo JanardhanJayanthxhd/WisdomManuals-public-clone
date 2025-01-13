@@ -49,6 +49,18 @@ Install the required packages using `pip`
     > pip install -r requirements.txt
 ```
 
+
+## Relational Database
+
+(for more see 'ss' directory)
+
+<details><summary>Home page</summary>
+
+<img src="ss/db_schema.png">
+
+</details>
+
+
     
 ## Screenshots
 
