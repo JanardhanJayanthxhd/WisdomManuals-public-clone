@@ -52,8 +52,28 @@ Install the required packages using `pip`
     
 ## Screenshots
 
-<details><summary>1. Home page</summary>
+(for more see 'ss' directory)
 
-<img scr="ss/home.png">
+<details><summary>Home page</summary>
+
+<img src="ss/home.png">
+
+</details>
+
+<details><summary>Books display page</summary>
+
+<img src="ss/books.png">
+
+</details>
+
+<details><summary>Register page</summary>
+
+<img src="ss/register.png">
+
+</details>
+
+<details><summary>Cart page</summary>
+
+<img src="ss/cart.png">
 
 </details>
